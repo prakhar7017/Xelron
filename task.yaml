@@ -1,0 +1,47 @@
+task_id: bugfix-c-reverse-string
+name: Fix a Segfaulting String Reversal Program
+domain: Bug Fixes
+
+context: |
+  You are a software engineer working on a C program that reverses strings. The program is supposed to take a string as input and output the reversed version. However, the current implementation has critical memory management issues that cause it to segfault (crash) when run.
+  
+  The program is located in `src/buggy.c` and can be compiled using the provided Makefile. When you run the program with a string argument, it crashes with a segmentation fault due to unsafe memory operations.
+
+objective: |
+  Fix the string reversal program to properly handle memory allocation, ensure correct string reversal, and prevent memory leaks.
+
+constraints:
+  max_agent_timeout_sec: 1800  # 30 minutes
+  max_test_timeout_sec: 300    # 5 minutes
+  allowed_tools:
+    - gcc
+    - make
+    - gdb
+    - valgrind
+  versions:
+    gcc: ">=9.0.0"
+    valgrind: ">=3.15.0"
+
+acceptance_criteria:
+  - The program must compile successfully with `make`
+  - The program must correctly reverse the string "hello" to "olleh"
+  - The program must correctly reverse the string "abcd" to "dcba"
+  - The program must handle empty strings correctly (input: "" → output: "")
+  - The program must handle single character strings correctly (input: "a" → output: "a")
+  - The program must not have any memory leaks (verified with valgrind)
+  - The program must not segfault or crash with any valid input
+
+inputs:
+  - src/buggy.c: The source code with memory management bugs
+  - Makefile: For building the program
+
+outputs:
+  - A fixed version of src/buggy.c that passes all tests
+  - The compiled binary "reverse" that can be run with a string argument
+
+hints: |
+  - Use debugging tools like gdb to identify where the segmentation fault occurs
+  - Consider what happens when you try to write to an uninitialized pointer
+  - Remember to properly allocate memory before writing to it
+  - Don't forget to free any dynamically allocated memory when it's no longer needed
+  - Make sure strings are properly null-terminated
